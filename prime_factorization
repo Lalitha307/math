@@ -1,0 +1,44 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define M 1000001
+int primes[M];
+void primeFact(){
+    for (int i=0; i<M; i++)primes[i] = i;
+    for (int i=2; i*i<=M; i++){
+        if (primes[i] == i){
+            for (int j=i*i; j<M; j+=i)primes[j] = i;
+        }
+    }
+}
+void Factorization(int i,unordered_map<int,int>&mp){
+    while (i != 1){
+        mp[primes[i]]++;
+        i /= primes[i];
+    }
+}
+
+int countFacts(vector<int>&v){
+    int n = v.size();
+    unordered_map<int,int>mp;
+    for (int i=0; i<n; i++){
+        Factorization(v[i],mp);
+    }
+    int cnt = 1;
+    for (auto it : mp){
+        cnt = cnt*(it.second+1);
+    }
+    return cnt;
+}
+
+int main(){
+    primeFact();
+    int t;
+    cin>>t;
+    while (t--){
+        int n;
+        cin>>n;
+        vector<int>v(n);
+        for (int i=0; i<n; i++)cin>>v[i];
+        cout<<"==================================="<<countFacts(v)<<endl;
+    }
+}
